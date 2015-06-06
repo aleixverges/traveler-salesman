@@ -46,20 +46,25 @@ def shortest_distance(hash)
   hash.min_by{|k,v| v}
 end
 
-cities = read_cities(Dir.pwd + '/cities.txt')
-departure_city = cities.keys[0]
-trip_plan = Array.new
+def calculate_shortest_trip(source_file_path)
+  cities = read_cities(source_file_path)
+  departure_city = cities.keys[0]
+  trip_plan = Array.new
 
-trip_plan << departure_city
-current_city_positions = cities[departure_city]
-cities.delete(departure_city)
+  trip_plan << departure_city
+  current_city_positions = cities[departure_city]
+  cities.delete(departure_city)
 
-for i in 0..cities.length - 1
-  compare_cities = cities.clone
-  next_destiny = shortest_trip(current_city_positions, compare_cities)
-  trip_plan << next_destiny[0]
-  current_city_positions = cities[next_destiny[0]]
-  cities.delete(next_destiny[0])
+  for i in 0..cities.length - 1
+    compare_cities = cities.clone
+    next_destiny = shortest_trip(current_city_positions, compare_cities)
+    trip_plan << next_destiny[0]
+    current_city_positions = cities[next_destiny[0]]
+    cities.delete(next_destiny[0])
+  end
+  trip_plan
 end
 
+source_file_path = Dir.pwd + '/cities.txt'
+trip_plan = calculate_shortest_trip(source_file_path)
 puts trip_plan
